@@ -1,0 +1,12 @@
+/vendor
+/node_modules
+.env
+.idea/.name
+.idea/compiler.xml
+.idea/copyright/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/tartar-server.iml
+.idea/uiDesigner.xml
+.idea/vcs.xml
+.idea/workspace.xml
