@@ -19,9 +19,7 @@ class DocumentsController extends Controller {
     public function findMultiResult(Documents $documents) {
         $result = $documents->select('id','no','target','deep','category','subject','name','created_at','updated_at');
         $result = query::redefinitionQuery($result,$_GET);
-        //return $result->get();
-        return $documents->max('id');
-
+        return $result->get();
     }
 
     public function findSingleResult(Documents $documents, $id) {

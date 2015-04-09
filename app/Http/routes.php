@@ -31,6 +31,15 @@ Route::group(['prefix' => 'documents'], function() {
 	put('/{id}','DocumentsController@modificationDocument');
 });
 
+Route::group(['prefix'=>'emails'],function() {
+
+	get('','EmailsController@findMultiResult');
+
+	get('/{id}','EmailsController@findSingleResult');
+
+	post('','EmailsController@sendEmail');
+
+});
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
