@@ -29,13 +29,12 @@ class DocumentsController extends Controller {
     }
 
     public function writeDocument(Documents $documents) {
-        $data = Input::Json();
         $now = date("Y-m-d H:i:s");
         if($documents->max('id') == '')
             $lastId = 1000;
         else
             $lastId = $documents->max('id')+1000;
-        $documents->insert(array('id'=>$lastId,'target'=>$data->get('target'),'deep'=>0,'category'=>$data->get('category'),'subject'=>$data->get('subject'), 'content'=>$data->get('content'), 'img'=>$data->get('img'), 'name'=>$data->get('name'), 'password'=>$data->get('password'), 'created_at'=>$now,'updated_at'=>$now));
+        $documents->insert(array('id'=>$lastId,'target'=>Input::get('target'),'deep'=>0,'category'=>Input::get('category'),'subject'=>Input::get('subject'), 'content'=>Input::get('content'), 'img'=>Input::get('img'), 'name'=>Input::get('name'), 'password'=>sha1(Input::get('password')), 'created_at'=>$now,'updated_at'=>$now));
         return DocumentsController::findSingleResult($documents,$lastId);
     }
 
@@ -45,18 +44,17 @@ class DocumentsController extends Controller {
         $inputId = $origin[0]['id'] -1;
         $now = date("Y-m-d H:i:s");
         $data = Input::Json();
-        $documents->insert(array('id'=>$inputId,'target'=>$data->get('target'),'deep'=>$deep,'category'=>$data->get('category'),'subject'=>$data->get('subject'), 'content'=>$data->get('content'), 'img'=>$data->get('img'), 'name'=>$data->get('name'), 'password'=>$data->get('password'), 'created_at'=>$now,'updated_at'=>$now));
+        $documents->insert(array('id'=>$inputId,'target'=>Input::get('target'),'deep'=>$deep,'category'=>Input::get('category'),'subject'=>Input::get('subject'), 'content'=>Input::get('content'), 'img'=>Input::get('img'), 'name'=>Input::get('name'), 'password'=>sha1(Input::get('password')), 'created_at'=>$now,'updated_at'=>$now));
         return DocumentsController::findSingleResult($documents,$inputId);
     }
     public function checkUser(Documents $documents, $id) {
         $data = Input::Json();
         $result = DocumentsController::findSingleResult($documents,$id);
-        if($result[0]['name'] == $data->get('name') && $result[0]['password'] == $data->get('password')){
-            return 'true';
-        } else {
-            return 'false';
-        }
 
+        if($result[0]['name'] == Input::get('name') && $result[0]['password'] == sha1(Input::get('password')))
+            return 'true';
+        else
+            return 'false';
     }
 
     public function deleteDocument(Documents $documents, $id) {
@@ -70,7 +68,7 @@ class DocumentsController extends Controller {
     public function modificationDocument(Documents $documents, $id) {
         $data = Input::Json();
         $documents->where('id','=',$id)->update(
-            ['subject' => $data->get('subject'), 'content' => $data->get('content')]
+            ['subject' => Input::get('subject'), 'content' => Input::get('content')]
         );
         return DocumentsController::findSingleResult($documents,$id);
     }

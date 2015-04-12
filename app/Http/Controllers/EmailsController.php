@@ -31,6 +31,6 @@ class EmailsController extends Controller {
     public function sendEmail(Emails $emails) {
         $data = Input::Json();
         $now = date("Y-m-d H:i:s");
-        return EmailsController::findSingleResult($emails,$emails->insertGetId(array('name'=>$data->get('name'), 'email'=>$data->get('email'), 'content'=>$data->get('content'), 'created_at'=>$now,'updated_at'=>$now)));
+        return EmailsController::findSingleResult($emails,$emails->insertGetId(array('name'=>Input::get('name'), 'email'=>Input::get('email'), 'content'=>Input::get('content'), 'created_at'=>$now,'updated_at'=>$now)));
     }
 }
